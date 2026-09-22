@@ -1,0 +1,154 @@
+
+╔══════════════════════════════════════════════════════════════════════╗
+║           مشروع قاتي (Qaati) — الإصدار 2.0 — الملخص              ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+📦 الملف: qaati_project_v2.0_final.zip
+📊 الحجم: 0.17 MB
+📁 عدد الملفات: 139 ملف
+
+═══════════════════════════════════════════════════════════════════════
+🎯 ما تم إنجازه
+═══════════════════════════════════════════════════════════════════════
+
+✅ 1. إصلاح الثغرات الحرجة (10/10)
+   • إيداع رصيد وهمي — التحقق من المحفظة قبل الإضافة
+   • payments بدون صلاحيات — RolesGuard + Ownership
+   • خلط shopId/userId — استخدام ownerId الصحيح
+   • IDOR إنشاء منتجات — req.user.shopId
+   • FK Violation — userId بدلاً من shopId
+   • تحديث حالة الطلب — State Machine + Driver validation
+   • تسريب البيانات — Ownership checks في كل endpoint
+   • غياب RBAC — RolesGuard فعّال على كل Controller
+   • Socket.io بدون مصادقة — JWT على الاتصال
+   • أسرار مكشوفة — .gitignore + env separation
+
+✅ 2. ميزات جديدة
+   • نظام OTP كامل (إرسال + تحقق)
+   • لوحة إدارة (Admin Panel)
+   • دعم 10+ محافظ محلية (Jawali, Jip, Fulusk, ...)
+   • State Machine للطلبات
+   • Rate Limiting + Helmet + CORS آمن
+   • Healthchecks + Monitoring
+   • Backup automated
+
+✅ 3. Flutter — شاشات ناقصة مُنشأة
+   • home_screen.dart (الرئيسية)
+   • seller_dashboard.dart (لوحة البائع)
+   • driver_home_screen.dart (لوحة الموصّل)
+   • otp_verification_screen.dart (التحقق)
+
+✅ 4. Infrastructure
+   • docker-compose.yml مُحسّن (healthchecks + limits)
+   • nginx.conf (SSL + gzip + rate limiting)
+   • 01_database.sql مُحدّث (OTP + Admin + Constraints)
+
+═══════════════════════════════════════════════════════════════════════
+📂 هيكل المشروع
+═══════════════════════════════════════════════════════════════════════
+
+qaati_project/
+├── .gitignore
+├── README.md
+├── 01_database.sql
+├── docker-compose.yml
+├── nginx.conf
+│
+├── backend/
+│   ├── .env
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── src/
+│       ├── main.ts
+│       ├── app.module.ts
+│       ├── auth/ (OTP + JWT + Roles)
+│       ├── users/
+│       ├── shops/
+│       ├── products/
+│       ├── orders/ (State Machine)
+│       ├── deliveries/
+│       ├── payments/ (Local Wallets)
+│       ├── wallet/
+│       ├── conversations/
+│       ├── notifications/
+│       ├── reviews/
+│       ├── search/
+│       ├── live-streams/
+│       ├── gateways/ (Socket.io + JWT)
+│       └── admin/ (NEW)
+│
+└── qaati_app/
+    ├── pubspec.yaml
+    └── lib/
+        ├── main.dart
+        ├── app.dart
+        ├── routes.dart
+        ├── core/
+        ├── models/
+        ├── providers/
+        ├── screens/
+        │   ├── auth/ (Login + Register + OTP)
+        │   ├── buyer/ (Home + Cart + Orders + ...)
+        │   ├── seller/ (Dashboard + Products + ...)
+        │   └── driver/ (Home + Orders + Earnings)
+        └── widgets/
+
+═══════════════════════════════════════════════════════════════════════
+🚀 خطوات التشغيل
+═══════════════════════════════════════════════════════════════════════
+
+1. Backend:
+   cd backend
+   npm install
+   cp .env.example .env  # عدّل القيم
+   npm run start:dev
+
+2. Flutter:
+   cd qaati_app
+   flutter create . --platforms android,ios,web
+   flutter pub get
+   flutter build apk --release
+
+3. Docker (Production):
+   docker-compose up -d
+
+═══════════════════════════════════════════════════════════════════════
+⚠️ ملاحظات مهمة
+═══════════════════════════════════════════════════════════════════════
+
+• غيّر ALL secrets قبل النشر (JWT_SECRET, DB_PASS, API keys)
+• احصل على API keys من مزودي الدفع (Jawali, Jip, Fulusk)
+• شغّل flutter create . لتوليد android/ios/web
+• اختبر end-to-end قبل الإطلاق
+• فعّل SSL (Let's Encrypt)
+• عطّل Swagger في الإنتاج
+
+═══════════════════════════════════════════════════════════════════════
+📞 الدعم
+═══════════════════════════════════════════════════════════════════════
+
+للاستفسارات أو الإبلاغ عن مشاكل:
+• مراجعة README.md المرفق
+• التحقق من logs عبر docker-compose logs -f api
+
+═══════════════════════════════════════════════════════════════════════
+✨ صنع بإتقان — منصة قاتي v2.0
+═══════════════════════════════════════════════════════════════════════
+
+PHASE 5 STATUS
+- Financial-system code hardening complete.
+- Stripe webhook signature and replay protection added.
+- Card payment amount/currency/provider transaction verification added.
+- Cash orders separated from wallet accounting.
+- Withdrawal pending/approve/reject-reversal lifecycle added.
+- Database financial invariants and webhook event migration added.
+- Live PostgreSQL/provider/build verification remains pending.
+
+PHASE 11 INCREMENT 2 STATUS
+- Release candidate: RC3
+- Platform fee ledger added and settlement reconciliation corrected.
+- Stripe webhook operations consolidated onto one transaction manager.
+- Payment expiry/cancelled-order races closed.
+- OTP abuse/state-transition hardening added.
+- Static/regression audits pass; runtime production gate remains open.
